@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="padding-top:20px;">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="well">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <td colspan="2">
+                            New Registration
+                            <a class="btn btn-success pull-right" href="Login.html">Login</a>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Email</td>
+                        <td><input type="text" id="txtemail" placeholder="Email"/></td>
+                    </tr>
+                    <tr>
+                        <td>password</td>
+                        <td><input type="password" id="txtpassword" placeholder="password"/></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm password</td>
+                        <td><input type="password" id="txtconfirmpassword" placeholder="Confirm password" /></td>
+                    </tr>
+                    <tr class="success">
+                        <td colspan="2">
+                            <input id="btnregister" type="button" class="btn btn-success" value="Register"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" tabindex="-1" id="successmodal" data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>Success</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h2>Registration Successfull</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" class="btn btn-success">close </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="diverror" class="alert alert-danger collapse">
+                <a id="linkclose" class="close" href="#">&times;</a>
+                <div id="diverrortext"></div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#linkclose').click(function () {
+                $('#diverror').hide('fade');
+            });
+            $('#btnregister').click(function () {
+                $.ajax({
+                    url: 'api/account/register',
+                    method: 'post',
+                    data: {
+                        email: $('#txtemail').val(),
+                        password: $('#txtpassword').val(),
+                        confirmpassword: $('#txtconfirmpassword').val(),
+                    },
+                    success: function () {
+                        $('#successmodal').modal('show');
+                    },
+                    error: function (ggg) {
+                        $('#diverrortext').text(ggg.responseText);
+                        $('#diverror').show('fade');
+                    }
+                });
+                
+            });
+        });
+    </script>
+</body>
+</html>

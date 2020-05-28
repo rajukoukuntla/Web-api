@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ulemployee = $('#ulemployees');
+           
+            $('#btn').click(function () {
+
+                var username = $('#txtuser').val();
+                var password = $('#txtpassword').val();
+                $.ajax({
+                    type: 'GET',
+                    url: "api/Employee/",
+                    datatype: 'json',
+                    headers :{
+                        'Authorization' : 'Basic ' + btoa(username + ':'+ password)
+                    },
+                    success: function (data) {
+                        ulemployee.empty();
+                        $.each(data, function (index, val) {
+                            var fullname = val.Firstname + '' + val.Lastname;
+                            ulemployee.append('<li>' + fullname + '('+ val.gender + ') </li>')
+                        });
+                    },
+                    complete: function(ggg)
+                    {
+                        if(ggg.status == '401')
+                        {
+                            ulemployee.empty();
+                            ulemployee.append('<li>'+ ggg.status + ':' + ggg.statusText + '</li>');
+                        }
+                    }
+                });
+            });
+            $('#btnclear').click(function () {
+
+                ulemployee.empty();
+            });
+        });
+    </script>
+</head>
+<body>
+    Username: <input type="text" id="txtuser"/>
+    password: <input type="text" id="txtpassword" />
+    <br /><br />
+    <input id="btn" type="button" value="Get all data" />
+    <input id="btnclear" type="button" value="clear data" />
+    <ul id="ulemployees"></ul>
+</body>
+</html>
